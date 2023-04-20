@@ -20,7 +20,7 @@ port = 50001
 
 def move1():
     # Q1 = [0.36910516608044464, -1.648588551412895, 2.149498216971902, -2.069142391288544, -1.5755909563200676, 3.503362071075151]
-    Q2 = [0.11232423477845364, -1.6567479038806292, 2.3227691063496896, -2.2356343862718075, -1.576010241206296, 3.246477036806067]
+    Q2 = [0.11232546196308396, -1.6459009403734806, 2.330459770162445, -2.2541643277088115, -1.576097006994611, 3.246503670547497]
     # v1 = [0.001, 0.001, 0.001, 0.001, 0.001, 0.001]
     # v1 = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
     g = FollowJointTrajectoryGoal()
@@ -41,8 +41,8 @@ def move_repeated():
     g = FollowJointTrajectoryGoal()
     g.trajectory = JointTrajectory()
     g.trajectory.joint_names = JOINT_NAMES
-    Q1 = [0.11232423477845364, -1.6391863357528837, 2.334893684105548, -2.2652865416977965, -1.5760013632924865, 3.246503670547497]
-    Q2 = [0.11232423477845364, -1.6986591032616971, 2.28879126571678, -2.1597028358152217, -1.5760013632924865, 3.246485914719877]
+    Q1 = [0.11251738852599485, -1.620542473871832, 2.3466357829267066, -2.295736779390822, -1.5759815845277023, 3.24670583962796]
+    Q2 = [0.11251738852599485, -1.6868878268476362, 2.2990369726709434, -2.181735267648305, -1.5759815845277023, 3.24669696171415]
     # g.trajectory.points = [
     #     JointTrajectoryPoint(positions=Q1, velocities=[0]*6, time_from_start=rospy.Duration(2.0)),
     #     # JointTrajectoryPoint(positions=Q2, velocities=[0]*6, time_from_start=rospy.Duration(3.0)),
@@ -74,15 +74,15 @@ def move_repeated():
     # Q2[1] = sh2
     # Q1[2] = el1
     # Q2[3] = w2
-    d = 5.0
+    d = 4.0
     g.trajectory.points = []
-    for i in range(1):
+    for i in range(2):
         g.trajectory.points.append(
             JointTrajectoryPoint(positions=Q1, velocities=[0]*6, time_from_start=rospy.Duration(d)))
-        d += 5
+        d += 4
         g.trajectory.points.append(
             JointTrajectoryPoint(positions=Q2, velocities=[0]*6, time_from_start=rospy.Duration(d)))
-        d += 5
+        d += 4
         # print(g.trajectory.velocities)
         # g.trajectory.points.append(
         #     JointTrajectoryPoint(positions=Q3, velocities=[0]*6, time_from_start=rospy.Duration(d)))
@@ -102,10 +102,10 @@ def main():
         print "Waiting for server..."
         client.wait_for_server()
         print "Connected to server"
-        # move1()
+        move1()
         move_repeated()
         move1()
-        # #move_disordered()
+        #move_disordered()
         #move_interrupt()
     except KeyboardInterrupt:
         rospy.signal_shutdown("KeyboardInterrupt")

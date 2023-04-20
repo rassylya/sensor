@@ -132,9 +132,9 @@ target_link_libraries(accel_sub
    ${catkin_LIBRARIES}
  )
 
-add_executable(hall_calibrate src/hall_calibrate.cpp)
-add_dependencies(hall_calibrate ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(hall_calibrate
+add_executable(single_hall_calibrate src/hall_calibrate.cpp)
+add_dependencies(single_hall_calibrate ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(single_hall_calibrate
    ${catkin_LIBRARIES}
  )
 
@@ -150,3 +150,8 @@ target_link_libraries(contact_ur
    ${catkin_LIBRARIES}
  )
 
+add_executable(double_hall_calibrate src/two_sensors.cpp)
+add_dependencies(double_hall_calibrate  ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(double_hall_calibrate
+   ${catkin_LIBRARIES}
+ )

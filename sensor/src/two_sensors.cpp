@@ -72,16 +72,16 @@ int main(int argc, char **argv)
 		pub.publish(grip);
 		ros::spinOnce();
 		rate.sleep();
-		if(curr<=6){
+		if(curr<=10){
 			break;
 		}
 	}
 		
 	cout<<"Collecting Data"<<endl;
 			// cout<<"Start time"<<endl;
-	while (start_time<50000 && ros::ok()){				
+	while (start_time<30000 && ros::ok()){				
 		myfile <<ros::Time::now()<<","<<start_time<<","<<witt<<","<<hall1<<","<<hall2<<","<<poss<<"\n";
-		poss = curr-0.0001*trial;
+		poss = curr-0.0003*trial;
 		// poss = curr-0.001*trial;
 		grip.data[0] = 20;
 		grip.data[1] = poss;
@@ -96,11 +96,11 @@ int main(int argc, char **argv)
 	trial = 1;
 	curr = poss	;
 	cout<<poss<<endl;
-	while(start_time<30000 && ros::ok())
+	while(start_time<35000 && ros::ok())
 	{
 		cout<<start_time<<endl;
 		myfile <<ros::Time::now()<<","<<start_time<<","<<witt<<","<<hall1<<","<<poss<<"\n";
-		poss = curr+0.0001*trial;
+		poss = curr+0.0003*trial;
 		// poss = curr+0.001*trial;
 		grip.data[0] = 20;
 		grip.data[1] = poss;

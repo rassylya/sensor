@@ -17,7 +17,7 @@ def talker():
     rate = rospy.Rate(1000) # 10hz
 
     FORMAT = pyaudio.paInt16
-    CHANNELS = 2
+    CHANNELS = 4
     RATE = 8000
     CHUNK = 1
     audio = pyaudio.PyAudio()
@@ -29,13 +29,12 @@ def talker():
     sample = np.zeros([CHANNELS, CHUNK])
     
     print("recording...")
-    file = open('/home/rass/Rassul/experiments/test_acc.csv', 'w')
+    file = open('/home/rass/Rassul/test_acc.csv', 'w')
     writer = csv.writer(file)
     i = 0
     while not rospy.is_shutdown():
     # while counter<1000:
         data = stream.read(CHUNK, exception_on_overflow = False)
-
         # writer.writerow(data)
         
         # read data from stream
@@ -44,14 +43,18 @@ def talker():
         #         sample[j,i]=int.from_bytes([data[j*2+i*4],data[j*2+i*4+1]], "little", signed=True)
 
         # print(int.from_bytes([data[2], data[3]], "little", signed=True))
-        for j in range(CHANNELS):
-            # s1 = int.from_bytes([data[j*2+i*4],data[j*2+i*4+1]], "little", signed=True)
-            sample[j,i]=int.from_bytes([data[j*2+i*4],data[j*2+i*4+1]], "little", signed=True)
-            writer.writerow([sample[0][0],sample[1][0]])
-            accel_data.accel1_x = sample[0][0] #32768
-            accel_data.accel1_y = sample[1][0]
+        for j in range(4):
+        # s1 = int.from_bytes([data[j*2+i*4],data[j*2+i*4+1]], "little", signed=True)
+        # sample[j,i]=int.from_bytes([data[j*2+i*4],data[j*2+i*4+1]], "little", signed=True)
+            sample[j]=int.from_bytes([data[j*2],data[j*2+1]], "little", signed=True)
+            # print(sample.shape)
+            writer.writerow([sample[0][0],sample[1][0],sample[2][0],sample[3][0]])
+            accel_data.accel1_x = sample[0] #32768
+            accel_data.accel1_y = sample[1]
+            accel_data.accel2_x = sample[2] #32768
+            accel_data.accel2_y = sample[3]
             pub.publish(accel_data)
-            print(f"{accel_data.accel1_x} {accel_data.accel1_y}")
+            print(f"{accel_data.accel1_x} {accel_data.accel1_y} {accel_data.accel2_x} {accel_data.accel2_y}")
         rate.sleep()
    
     # stop Recording
