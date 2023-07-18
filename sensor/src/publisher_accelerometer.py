@@ -6,38 +6,15 @@ import csv
 # import sys
 # sys.path.append('../sensor')
 from ourSensor_msgs.msg import Accel
-from std_msgs.msg import String, Float32MultiArray
-from wittenstein_msgs.msg import wittenstein
 
 # accel_data = Accel()
 # publisher
-name = ""
-hall1 = 0
-hall2 = 0
-witt = 0
+
 accel_data = Accel()
-def callback(data):
-    global name
-    name = data.data
-def hallCallback(msg):
-    global hall1, hall2
-    arr = list(msg.data)
-    hall1 = arr[0]
-    hall2 = arr[1]
-    # print(hall1)
-def wittCallback(msg):
-    global witt
-    witt = msg.fz
 
 def talker():
-    global name
-    global hall1, hall2
-    global witt
     pub = rospy.Publisher('accel_data', Accel, queue_size = 100)
     rospy.init_node('talker', anonymous=True)
-    rospy.Subscriber('filename_topic', String, callback)
-    rospy.Subscriber('chatter', Float32MultiArray, hallCallback)
-    rospy.Subscriber('wittenstein_topic', wittenstein, wittCallback)
 
     rate = rospy.Rate(1000) # 10hz
     FORMAT = pyaudio.paInt16
@@ -53,10 +30,6 @@ def talker():
     sample = np.zeros([CHANNELS, CHUNK])
     threshold = np.zeros([CHANNELS, 1])
     print("recording...")
-    print(name)
-    file = open(name + '/sensors.csv', 'w')
-    writer = csv.writer(file)
-    i = 0
     while not rospy.is_shutdown():
         	
         data = stream.read(CHUNK, exception_on_overflow = False)
@@ -70,18 +43,13 @@ def talker():
         accel_data.accel1_y = sample[1][0]
         accel_data.accel2_x = sample[2][0]
         accel_data.accel2_y = sample[3][0]
-        # print(hall1)
-        writer.writerow([rospy.Time.now(), accel_data.accel1_x, accel_data.accel1_y, accel_data.accel2_x, 
-        accel_data.accel2_y, hall1, hall2, witt])
         pub.publish(accel_data)
-        # print(accel_data.accel1_x)
+        print(accel_data.accel1_x)
         sample = np.zeros([CHANNELS, CHUNK])
         rate.sleep()
     # stop Recording
     stream.stop_stream()
     stream.close()
-    file.close()
-
     # audio.terminate()
 
 if __name__ == '__main__':

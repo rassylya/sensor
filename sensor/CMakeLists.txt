@@ -12,8 +12,8 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   wittenstein_msgs
-  rosbag
   ourSensor_msgs
+  std_msgs
 )
 
 # Generate messages in the 'msg' folder
@@ -120,17 +120,12 @@ include_directories(
  )
  
  
-add_executable(my_test src/test.cpp src/HexFT.cpp)
- add_dependencies(my_test ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
- target_link_libraries(my_test
-   ${catkin_LIBRARIES}
- )
+# add_executable(my_test src/test.cpp src/HexFT.cpp)
+#  add_dependencies(my_test ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#  target_link_libraries(my_test
+#    ${catkin_LIBRARIES}
+#  )
 
-add_executable(accel_sub src/accel_sub.cpp)
-add_dependencies(accel_sub ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(accel_sub
-   ${catkin_LIBRARIES}
- )
 
 add_executable(single_hall_calibrate src/hall_calibrate.cpp)
 add_dependencies(single_hall_calibrate ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
@@ -138,11 +133,6 @@ target_link_libraries(single_hall_calibrate
    ${catkin_LIBRARIES}
  )
 
-add_executable(experiment src/experiment.cpp)
-add_dependencies(experiment ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(experiment
-   ${catkin_LIBRARIES}
- )
 
 add_executable(contact_ur src/contact_slide.cpp)
 add_dependencies(contact_ur ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
@@ -150,8 +140,15 @@ target_link_libraries(contact_ur
    ${catkin_LIBRARIES}
  )
 
-add_executable(double_hall_calibrate src/two_sensors.cpp)
-add_dependencies(double_hall_calibrate  ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(double_hall_calibrate
-   ${catkin_LIBRARIES}
- )
+ add_executable(ml_data src/ml_data.cpp)
+ add_dependencies(ml_data ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+ target_link_libraries(ml_data
+    ${catkin_LIBRARIES}
+  )
+ 
+add_executable(hri src/hri.cpp)
+add_dependencies(hri ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(hri
+    ${catkin_LIBRARIES}
+  )
+  
